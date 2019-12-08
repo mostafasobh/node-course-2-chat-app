@@ -12,8 +12,23 @@ const port= process.env.PORT || 3000
 //middleWare
 const publicPath= path.join(__dirname,'../public') //faster way to get the path of file
 app.use(express.static(publicPath))
+
+
 io.on('connection',(socket)=>{
     console.log('new user connected')
+
+    socket.on('createMessage',function(clientMsg){
+        console.log('you have message from the client',clientMsg)
+    })
+
+socket.emit('newMessage',{
+    from:'server.yahoo.org',
+    text:'hi client it\' me the server',
+    createdAt:1234
+})
+
+
+
     socket.on('disconnect',()=>{
         console.log('client disconnected')
     })
