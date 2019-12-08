@@ -5,7 +5,7 @@ const socketIo = require('socket.io')
 const app = express()
 var server=http.createServer(app)
 var io = socketIo(server);
-
+const {generateMessage}=require('./utils/message')
 const port= process.env.PORT || 3000
 
 
@@ -17,23 +17,12 @@ app.use(express.static(publicPath))
 io.on('connection',(socket)=>{
     console.log('new user connected')
 
-    socket.emit('newMessage',{
-        from:'admin',
-        text:'hi new user'
-    })
-    socket.broadcast.emit('newMessage',{
-        from:'Admin',
-        text:'cheer or newst member',
-        createdAt:new Date().getTime()
-    })
+    socket.emit('newMessage',generateMessage('Admin','Welcome to Chat app'))
+    socket.broadcast.emit('newMessage',generateMessage('Admin','New user joind'))
 
      socket.on('createMessage', (message) => {
        console.log('createMessage', message);
-        io.emit('newMessage', {
-          from: message.from,
-          text: message.text,
-          createdAt: new Date().getTime()
-        });
+        io.emit('newMessage', generateMessage(message.from,message.text));
     // socket.broadcast.emit('newMessage',{ //send's the message to all connection excpet him self
     //     from: message.from,
     //     text:message.text,
@@ -52,12 +41,12 @@ io.on('connection',(socket)=>{
 // var server= http.createServer((req,res)=>{}) ==> is the same as the above code cause exppress use the same callback function behinde the scene 
 //console.log(__dirname+'/../public'); //this is the old slow way to define the path of the file
 //console.log(process.argv) is process of passing arguments through command line
+//https://secure-sands-96353.herokuapp.com/  
+//heroku link
 
 
-app.get('/welcome',(req,res)=>{
-res.send('hi and welcome my dear boy')
-})
 
 server.listen(port,()=>{
     console.log(`server is up on port ${port}`)
 })
+
