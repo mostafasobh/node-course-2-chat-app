@@ -17,17 +17,16 @@ app.use(express.static(publicPath))
 io.on('connection',(socket)=>{
     console.log('new user connected')
 
-    socket.on('createMessage',function(clientMsg){
-        console.log('you have message from the client',clientMsg)
+    socket.on('createMessage', (message) => {
+        console.log('createMessage', message);
+        io.emit('newMessage', {
+          from: message.from,
+          text: message.text,
+          createdAt: new Date().getTime()
+        });
+//differnce between io.emit and socket.emit that io.emit emits the event to all connected connection
+        
     })
-
-socket.emit('newMessage',{
-    from:'server.yahoo.org',
-    text:'hi client it\' me the server',
-    createdAt:1234
-})
-
-
 
     socket.on('disconnect',()=>{
         console.log('client disconnected')
