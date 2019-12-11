@@ -5,7 +5,7 @@ const socketIo = require('socket.io')
 const app = express()
 var server=http.createServer(app)
 var io = socketIo(server);
-const {generateMessage}=require('./utils/message')
+const {generateMessage,generateLocationMessage}=require('./utils/message')
 const port= process.env.PORT || 3000
 
 
@@ -23,13 +23,15 @@ io.on('connection',(socket)=>{
        console.log('createMessage', message);
         io.emit('newMessage', generateMessage(message.from,message.text));
         callback('this is from the server')
+    })
     // socket.broadcast.emit('newMessage',{ //send's the message to all connection excpet him self
     //     from: message.from,
     //     text:message.text,
     //     completedAt:new Date().getTime()
     // })
 //differnce between io.emit and socket.emit that io.emit emits the event to all connected connection
-        
+    socket.on('createLocationMessage',(coards)=>{
+        io.emit('newLocationMessage',generateLocationMessage('Admin',coards.latitude,coards.longitude))
     })
 
     socket.on('disconnect',()=>{
