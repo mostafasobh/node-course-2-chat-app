@@ -8,24 +8,40 @@ var socket = io();
      })
 
      socket.on('newMessage', function (message) {
-  var formatedTime=moment(message.createdAt).format('H:mm a')
+        var formatedTime=moment(message.createdAt).format('H:mm a')
+         var template=$('#message-template').html();
+         var html =Mustache.render(template,{
+             from:message.from,
+             text:message.text,
+             createdAt:formatedTime
+             
+         })
 
-  var li = $('<li></li>');
-  li.text(`${message.from} ${formatedTime}: ${message.text}`)
+         $('#messages').append(html)
+ var formatedTime=moment(message.createdAt).format('H:mm a')
 
-  $('#messages').append(li)
+//   var li = $('<li></li>');
+//   li.text(`${message.from} ${formatedTime}: ${message.text}`)
+
+//   $('#messages').append(li)
 });
 
 socket.on('newLocationMessage',function(message){
 
     var formatedTime=moment(message.createdAt).format('H:mm a')
-    var li=$('<li></li>');
-    var a = $('<a>My current Location</a>')
-    a.attr('href',message.url)
-    a.attr('target','_blank')
-    li.text(`${message.from} ${formatedTime}: `)
-    li.append(a)
-    $('#messages').append(li,)
+    var template=$('#location-message-template').html()
+    var html=Mustache.render(template,{
+            url:message.url,
+             from:message.from,
+             createdAt:formatedTime
+    })
+    // var li=$('<li></li>');
+    // var a = $('<a>My current Location</a>')
+    // a.attr('href',message.url)
+    // a.attr('target','_blank')
+    // li.text(`${message.from} ${formatedTime}: `)
+    // li.append(a)
+    $('#messages').append(html)
 })
 
 $('form').submit(function(e){
@@ -34,7 +50,7 @@ $('form').submit(function(e){
 var messageTextbox= $('[name=message]')
 
      socket.emit('createMessage',{
-         from:'user',
+         from:'Admin',
          text:messageTextbox.val()
      },function(){
         messageTextbox.val('')
