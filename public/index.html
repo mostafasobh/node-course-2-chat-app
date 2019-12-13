@@ -1,32 +1,35 @@
 <!DOCTYPE html>
+
 <html>
+
 <head>
-        <script
-        src="https://code.jquery.com/jquery-3.4.1.js"
-        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
-        crossorigin="anonymous"></script>
-    <mete charset='utf-8'>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="/css/styles.css">
 </head>
 
-<body>
+<body class="chat">
 
-    <p> Welcome to chat app</p>
-    <ol id="messages"></ol>
+  <div class="chat__sidebar">
+    <h3>People</h3>
+    <div id="users"></div>
+  </div>
 
-    <form id='message-from'>
+  <div class="chat__main">
+    <ol id="messages" class="chat__messages"></ol>
 
-        <input name="message" type="text" placeholder="Message"/>
+    <div class="chat__footer">
+      <form id="message-form">
+        <input name="message" type="text" placeholder="Message" autofocus autocomplete="off"/>
         <button>Send</button>
+      </form>
+      <button id="send-location">Send location</button>
+    </div>
+  </div>
 
-    </form>
-    <button id="send-location">Share Location</button>
-
-    <script src='/socket.io/socket.io.js'></script>
-    <script src='./js/index.js'> </script>
-  <!--  <script src='./libs/jquery-3.4.1.min.js'></script>-->
-     
-   
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/libs/jquery-3.4.1.min.js"></script>
+  <script src="/js/index.js"></script>
+  <script src="./js/libs/moment.js"></script>
 </body>
 
 </html>
-

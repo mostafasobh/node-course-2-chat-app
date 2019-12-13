@@ -1,5 +1,5 @@
 var expect = require('expect')
-var {generateMessage,generateLocationMessage}=require('./message')
+var {generateMessage,generateLocationMessage}=require('./message')//you need to call the function first to make your test on it
 
 describe('generateMessage',()=>{
 it('should generate coorect message object',()=>{
@@ -23,7 +23,7 @@ describe('generateLocationMessage',()=>{
         
         var url=`https://www.google.com/maps?q=1,1`
 
-        var message=generateLocationMessage(from,latitude,longitude)
+        var message=generateLocationMessage(from,latitude,longitude)//you need to call the function first to make your test on it
         expect(message.url).toBe(url)
         expect(message.createdAt).toBeA('number')
         expect(message).toInclude({from,url})
